@@ -1,7 +1,6 @@
 trigger:
 - master
 
-
 pool:
   vmImage: 'ubuntu-latest'
 
@@ -15,16 +14,14 @@ stages:
   jobs:
   - job: Build
     displayName: Scan .Net and .Net core apps
-    pool:
-      vmImage: 'windows-latest'
     steps:
-    - task: NuGetToolInstaller@1
+    # - task: NuGetToolInstaller@1
 
-    - task: DotNetCoreCLI@2
-      displayName: Restore web api
-      inputs:
-        command: 'restore'
-        projects: '$(Build.SourcesDirectory)'
+    # - task: DotNetCoreCLI@2
+    #   displayName: Restore web api
+    #   inputs:
+    #     command: 'restore'
+    #     projects: '$(Build.SourcesDirectory)'
 
     - task: Bash@3
       displayName: 'Download CodeQL CLI Bundle'
@@ -33,9 +30,7 @@ stages:
         script: |
           echo "Downloading CodeQL CLI from: $CODEQL_BUNDLE_URL"
           mkdir -p codeql
-          ls -ll
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
-          tar -xzf codeql-bundle.tar.gz -C codeql
-          cd codeql
+          tar -xzf codeql-bundle.tar.gz
           ls -ll
           
