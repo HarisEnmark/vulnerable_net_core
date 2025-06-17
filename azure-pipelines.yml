@@ -5,6 +5,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  CODEQL_BUNDLE_URL: https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz
+  CODEQL_EXTRACT_DIR: $(Pipeline.Workspace)/codeql
+
 stages:
 - stage: Builders
   displayName: CodeQl CLI
@@ -22,4 +26,12 @@ stages:
         command: 'restore'
         projects: '$(Build.SourcesDirectory)'
 
- 
+    - task: Bash@3
+      displayName: 'Download CodeQL CLI Bundle'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Downloading CodeQL CLI from: $CODEQL_BUNDLE_URL"
+          mkdir -p $(CODEQL_EXTRACT_DIR)
+          curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
+          ls -ll
