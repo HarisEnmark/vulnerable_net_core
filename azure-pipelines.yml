@@ -33,6 +33,7 @@ stages:
         script: |
           echo "Downloading CodeQL CLI from: $CODEQL_BUNDLE_URL"
           mkdir -p $(CODEQL_EXTRACT_DIR)
-          curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
-          tar -xzf codeql-bundle.tar.gz -C $(CODEQL_EXTRACT_DIR)
           ls -ll
+          curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
+          tar -xzf codeql-bundle.tar.gz -C $(CODEQL_EXTRACT_DIR)          
+          ls -al "$CODEQL_EXTRACT_DIR"
