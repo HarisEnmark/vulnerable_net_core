@@ -7,7 +7,7 @@ pool:
 
 variables:
   CODEQL_BUNDLE_URL: https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz
-  CODEQL_EXTRACT_DIR: $(Pipeline.Workspace)/codeql
+  # CODEQL_EXTRACT_DIR: $(Pipeline.Workspace)/codeql
 
 stages:
 - stage: Builders
@@ -32,8 +32,10 @@ stages:
         targetType: 'inline'
         script: |
           echo "Downloading CodeQL CLI from: $CODEQL_BUNDLE_URL"
-          mkdir -p $(CODEQL_EXTRACT_DIR)
+          mkdir -p codeql
           ls -ll
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
-          tar -xzf codeql-bundle.tar.gz -C $(CODEQL_EXTRACT_DIR)          
-          ls -al "$CODEQL_EXTRACT_DIR"
+          tar -xzf codeql-bundle.tar.gz -C codeql
+          cd codeql
+          ls -ll
+          
