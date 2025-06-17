@@ -32,5 +32,5 @@ stages:
           mkdir -p codeql
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
           tar -xvzf codeql-bundle.tar.gz -C .
-          ./codeql resolve packs
+          ./codeql/codeql resolve languages
           
