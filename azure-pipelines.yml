@@ -7,7 +7,7 @@ pool:
 
 stages:
 - stage: Builders
-  displayName: ShiftLeft CORE
+  displayName: CodeQl CLI
   jobs:
   - job: Build
     displayName: Scan .Net and .Net core apps
