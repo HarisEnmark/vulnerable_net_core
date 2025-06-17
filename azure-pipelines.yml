@@ -35,3 +35,12 @@ stages:
           mkdir -p $(CODEQL_EXTRACT_DIR)
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
           ls -ll
+          tar -xzf codeql-bundle.tar.gz -C $(CODEQL_EXTRACT_DIR)
+    - task: Bash@3
+      displayName: 'Test CodeQL CLI Setup'
+      inputs:
+        targetType: 'inline'
+        script: |
+          echo "Testing CodeQL CLI..."
+          $(CODEQL_EXTRACT_DIR)/codeql/codeql resolve packs
+          $(CODEQL_EXTRACT_DIR)/codeql/codeql resolve languages
