@@ -31,6 +31,6 @@ stages:
           echo "Downloading CodeQL CLI from: $CODEQL_BUNDLE_URL"
           mkdir -p codeql
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
-          tar -xzf codeql-bundle.tar.gz
-          ls -ll
+          tar -xvzf codeql-bundle.tar.gz -C .
+          ./codeql resolve packs
           
