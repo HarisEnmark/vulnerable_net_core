@@ -33,4 +33,5 @@ stages:
           curl -L $CODEQL_BUNDLE_URL -o codeql-bundle.tar.gz
           tar -xvzf codeql-bundle.tar.gz -C .
           ./codeql/codeql resolve languages
-          
+          echo "########################################Codeql database create######################################"
+          ./codeql/codeql database create
