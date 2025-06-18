@@ -62,6 +62,7 @@ stages:
           
           # Step 4: Add to PATH
           export PATH="$CODEQL_DIR/codeql:$PATH"
+          export PATH="$CODEQL_DIR/codeql:$PATH"
           
           # Step 5: Verify CLI with resolve languages
           echo "Available CodeQL languages:"
