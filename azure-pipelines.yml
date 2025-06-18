@@ -70,5 +70,7 @@ stages:
           # Step 6: Create CodeQL database
           echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
           codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
-          
+          ls $DATABASE_DIR
+          codeql database analyze DATABASE_DIR --sarif-add-baseline-file-info --format=sarif-latest --output=$SOURCE_DIR/codeql-repo-js.sarif
+
           echo "✅ CodeQL database created successfully!"
