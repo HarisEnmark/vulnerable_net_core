@@ -71,6 +71,6 @@ stages:
           echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
           codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
           ls $DATABASE_DIR
-          codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 /codeql/codeql/csharp
+          codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 codeql/csharp-queries
           echo "✅ CodeQL Analyzed  successfully!"
           ls -a
