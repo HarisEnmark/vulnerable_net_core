@@ -48,8 +48,8 @@ stages:
           CODEQL_BUNDLE_URL="https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz"
           CODEQL_DIR="$(pwd)/codeql"
           DATABASE_DIR="$(pwd)/codeql-database"
-          SOURCE_DIR="$(pwd)/src"  # Change this if your code is elsewhere
-          LANGUAGE="javascript"    # Change to your source language (e.g., cpp, java, csharp)
+          SOURCE_DIR="$(pwd)"  # Change this if your code is elsewhere
+          LANGUAGE="csharp"    # Change to your source language (e.g., cpp, java, csharp)
           
           # Step 2: Download CodeQL bundle
           echo "Downloading CodeQL CLI bundle..."
