@@ -74,6 +74,6 @@ stages:
           codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 codeql/csharp-queries
           echo "✅ CodeQL Analyzed  successfully!"
           ls -a
-          codeql github upload-results --repository="test" --ref="refs/heads/main" --commit="c1897cf6bc4070277788af081259a1461a32d35d" --sarif=codeql-csharp-results.sarif
+          codeql github upload-results --repository="HarisEnmark/vulnerable_net_core" --ref="refs/heads/main" --commit="2ac5c1c85e8dc597670d323968aa8be2614992db" --sarif=codeql-csharp-results.sarif
       env:
         GITHUB_TOKEN: $(GITHUB_TOKEN)
