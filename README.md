@@ -1,4 +1,4 @@
-# About
+# About Testing CodeQL scan
 
 This is a vulnerable ASP .net core application that implements all
 vulnerabilities listed in [OWASP's Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project)
