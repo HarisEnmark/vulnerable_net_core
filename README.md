@@ -1,5 +1,7 @@
 # About Testing CodeQL scan on PR 
 
+var password=12345
+
 This is a vulnerable ASP .net core application that implements all
 vulnerabilities listed in [OWASP's Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project)
 as small web programs. For every web program, we provide an exploit
