@@ -1,4 +1,4 @@
-# About Testing CodeQL scan on PR 
+# Testing blocage of PR if security issues are present
 
 This is a vulnerable ASP .net core application that implements all
 vulnerabilities listed in [OWASP's Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project)
