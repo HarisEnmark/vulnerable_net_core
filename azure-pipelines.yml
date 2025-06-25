@@ -1,0 +1,89 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+stages:
+- stage: Builders
+  displayName: CodeQl CLI
+  jobs:
+  - job: Build
+    displayName: Scan .Net and .Net core apps
+    steps:
+
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          #!/bin/bash
+          
+          set -e  # Exit on error
+          
+          # Step 1: Define variables
+          CODEQL_BUNDLE_URL="https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz"
+          CODEQL_DIR="$(pwd)/codeql"
+          DATABASE_DIR="$(pwd)/codeql-database"
+          SOURCE_DIR="$(pwd)"  # Change this if your code is elsewhere
+          LANGUAGE="csharp"    # Change to your source language (e.g., cpp, java, csharp)
+          
+          # Step 2: Download CodeQL bundle
+          echo "Downloading CodeQL CLI bundle..."
+          mkdir -p "$CODEQL_DIR"
+          curl -L "$CODEQL_BUNDLE_URL" -o codeql-bundle.tar.gz
+          
+          # Step 3: Extract the bundle
+          echo "Extracting CodeQL CLI to $CODEQL_DIR..."
+          tar -xzf codeql-bundle.tar.gz -C "$CODEQL_DIR"
+          
+          # Step 4: Add to PATH
+          export PATH="$CODEQL_DIR/codeql:$PATH"
+          
+          # Step 5: Verify CLI with resolve languages
+          echo "Available CodeQL languages:"
+          codeql resolve languages
+          
+          # Step 6: Create CodeQL database
+          echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
+          codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
+          ls $DATABASE_DIR
+          codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 codeql/csharp-queries
+          echo "✅ CodeQL Analyzed  successfully!"
+          ls -a
+          codeql github upload-results --repository="HarisEnmark/vulnerable_net_core" --ref="refs/heads/main" --commit="$(Build.SourceVersion)" --sarif=codeql-csharp-results.sarif
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '.'
+        Contents: '**.sarif'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
+        ArtifactName: 'CodeAnalysisLogs'
+        publishLocation: 'Container'
+
+    # - task: Bash@3
+    #   displayName: 'Fail if SARIF contains error-level vulnerabilities'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       sarif_file="$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs/codeql-csharp-results.sarif"
+
+    #       if [ ! -f "$sarif_file" ]; then
+    #         echo "❌ SARIF file not found at $sarif_file"
+    #         exit 1
+    #       fi
+
+    #       count=$(grep -o '"level"[[:space:]]*:[[:space:]]*"error"' "$sarif_file" | wc -l)
+
+    #       if [ "$count" -gt 0 ]; then
+    #         echo "❌ Found $count error-level vulnerabilities (approximate). Failing pipeline."
+    #         exit 1
+    #       else
+    #         echo "✅ No error-level vulnerabilities found."
+    #       fi
