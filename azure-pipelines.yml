@@ -25,59 +25,59 @@ stages:
     - task: AdvancedSecurity-Dependency-Scanning@1
     - task: AdvancedSecurity-Codeql-Analyze@1
 
-    # - task: Bash@3
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       #!/bin/bash
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          #!/bin/bash
           
-    #       set -e  # Exit on error
+          set -e  # Exit on error
           
-    #       # Step 1: Define variables
-    #       CODEQL_BUNDLE_URL="https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz"
-    #       CODEQL_DIR="$(pwd)/codeql"
-    #       DATABASE_DIR="$(pwd)/codeql-database"
-    #       SOURCE_DIR="$(pwd)"  # Change this if your code is elsewhere
-    #       LANGUAGE="csharp"    # Change to your source language (e.g., cpp, java, csharp)
+          # Step 1: Define variables
+          CODEQL_BUNDLE_URL="https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz"
+          CODEQL_DIR="$(pwd)/codeql"
+          DATABASE_DIR="$(pwd)/codeql-database"
+          SOURCE_DIR="$(pwd)"  # Change this if your code is elsewhere
+          LANGUAGE="csharp"    # Change to your source language (e.g., cpp, java, csharp)
           
-    #       # Step 2: Download CodeQL bundle
-    #       echo "Downloading CodeQL CLI bundle..."
-    #       mkdir -p "$CODEQL_DIR"
-    #       curl -L "$CODEQL_BUNDLE_URL" -o codeql-bundle.tar.gz
+          # Step 2: Download CodeQL bundle
+          echo "Downloading CodeQL CLI bundle..."
+          mkdir -p "$CODEQL_DIR"
+          curl -L "$CODEQL_BUNDLE_URL" -o codeql-bundle.tar.gz
           
-    #       # Step 3: Extract the bundle
-    #       echo "Extracting CodeQL CLI to $CODEQL_DIR..."
-    #       tar -xzf codeql-bundle.tar.gz -C "$CODEQL_DIR"
+          # Step 3: Extract the bundle
+          echo "Extracting CodeQL CLI to $CODEQL_DIR..."
+          tar -xzf codeql-bundle.tar.gz -C "$CODEQL_DIR"
           
-    #       # Step 4: Add to PATH
-    #       export PATH="$CODEQL_DIR/codeql:$PATH"
+          # Step 4: Add to PATH
+          export PATH="$CODEQL_DIR/codeql:$PATH"
           
-    #       # Step 5: Verify CLI with resolve languages
-    #       echo "Available CodeQL languages:"
-    #       codeql resolve languages
+          # Step 5: Verify CLI with resolve languages
+          echo "Available CodeQL languages:"
+          codeql resolve languages
           
-    #       # Step 6: Create CodeQL database
-    #       echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
-    #       codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
-    #       ls $DATABASE_DIR
-    #       codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 codeql/csharp-queries
-    #       echo "✅ CodeQL Analyzed  successfully!"
-    #       ls -a
-    #       codeql github upload-results --repository="HarisEnmark/vulnerable_net_core" --ref="refs/heads/main" --commit="$(Build.SourceVersion)" --sarif=codeql-csharp-results.sarif
-    #   env:
-    #     GITHUB_TOKEN: $(GITHUB_TOKEN)
+          # Step 6: Create CodeQL database
+          echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
+          codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
+          ls $DATABASE_DIR
+          codeql database analyze "$DATABASE_DIR" --format=sarifv2.1.0 --output=codeql-csharp-results.sarif --threads=0 codeql/csharp-queries
+          echo "✅ CodeQL Analyzed  successfully!"
+          ls -a
+          codeql github upload-results --repository="HarisEnmark/vulnerable_net_core" --ref="refs/heads/main" --commit="$(Build.SourceVersion)" --sarif=codeql-csharp-results.sarif
+      env:
+        GITHUB_TOKEN: $(GITHUB_TOKEN)
 
-    # - task: CopyFiles@2
-    #   inputs:
-    #     SourceFolder: '.'
-    #     Contents: '**.sarif'
-    #     TargetFolder: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '.'
+        Contents: '**.sarif'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
 
-    # - task: PublishBuildArtifacts@1
-    #   inputs:
-    #     PathtoPublish: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
-    #     ArtifactName: 'CodeAnalysisLogs'
-    #     publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs'
+        ArtifactName: 'CodeAnalysisLogs'
+        publishLocation: 'Container'
 
     # - task: Bash@3
     #   displayName: 'Fail if SARIF contains error-level vulnerabilities'
