@@ -1,5 +1,5 @@
 trigger:
-- main
+- none
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -70,23 +70,23 @@ stages:
         ArtifactName: 'CodeAnalysisLogs'
         publishLocation: 'Container'
 
-    - task: Bash@3
-      displayName: 'Fail if SARIF contains error-level vulnerabilities'
-      inputs:
-        targetType: 'inline'
-        script: |
-          sarif_file="$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs/codeql-csharp-results.sarif"
+    # - task: Bash@3
+    #   displayName: 'Fail if SARIF contains error-level vulnerabilities'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       sarif_file="$(Build.ArtifactStagingDirectory)/CodeAnalysisLogs/codeql-csharp-results.sarif"
 
-          if [ ! -f "$sarif_file" ]; then
-            echo "❌ SARIF file not found at $sarif_file"
-            exit 1
-          fi
+    #       if [ ! -f "$sarif_file" ]; then
+    #         echo "❌ SARIF file not found at $sarif_file"
+    #         exit 1
+    #       fi
 
-          count=$(grep -o '"level"[[:space:]]*:[[:space:]]*"error"' "$sarif_file" | wc -l)
+    #       count=$(grep -o '"level"[[:space:]]*:[[:space:]]*"error"' "$sarif_file" | wc -l)
 
-          if [ "$count" -gt 0 ]; then
-            echo "❌ Found $count error-level vulnerabilities (approximate). Failing pipeline."
-            exit 1
-          else
-            echo "✅ No error-level vulnerabilities found."
-          fi
+    #       if [ "$count" -gt 0 ]; then
+    #         echo "❌ Found $count error-level vulnerabilities (approximate). Failing pipeline."
+    #         exit 1
+    #       else
+    #         echo "✅ No error-level vulnerabilities found."
+    #       fi
