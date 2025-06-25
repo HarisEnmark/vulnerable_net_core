@@ -4,9 +4,6 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  CODEQL_BUNDLE_URL: https://github.com/github/codeql-action/releases/latest/download/codeql-bundle.tar.gz
-  # CODEQL_EXTRACT_DIR: $(Pipeline.Workspace)/codeql
 
 stages:
 - stage: Builders
