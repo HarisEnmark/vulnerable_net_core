@@ -43,7 +43,7 @@ stages:
           # Step 5: Verify CLI with resolve languages
           echo "Available CodeQL languages:"
           codeql resolve languages
-          echo "ghp_k0crikJ4d9AIim6k4Aabcde4qotVgG4AUEhp"
+          
           # Step 6: Create CodeQL database
           echo "Creating CodeQL database at $DATABASE_DIR for language: $LANGUAGE..."
           codeql database create "$DATABASE_DIR" --language="$LANGUAGE" --source-root="$SOURCE_DIR"
